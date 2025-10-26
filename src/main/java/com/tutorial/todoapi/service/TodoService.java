@@ -18,12 +18,7 @@ public class TodoService {
     }
 
     public void createTodo(Todo newTodo) {
-        if (!newTodo.getDesc().isEmpty() || !newTodo.getName().isEmpty()) {
-            if (todoRepository.findAll()
-                              .stream().anyMatch(todo -> !todo.getId().equals(newTodo.getId()))) {
-                this.todoRepository.save(newTodo);
-            };
-        }
+        this.todoRepository.save(newTodo);
     }
 
     public Todo findTodoById(Long todoId) {
@@ -32,10 +27,16 @@ public class TodoService {
 
     public void updateTodo(Long todoId, String newName, String newDesc) {
         Todo todo = this.findTodoById(todoId);
+        todo.setName(newName);
+        todo.setDesc(newDesc);
         this.todoRepository.save(todo);
     }
 
     public List<Todo> listTodos() {
         return this.todoRepository.findAll();
+    }
+
+    public void deleteTodo(Long todoId) {
+        this.todoRepository.deleteById(todoId);
     }
 }
